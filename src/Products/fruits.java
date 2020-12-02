@@ -1,5 +1,15 @@
 package Products;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -69,10 +79,13 @@ public class fruits extends javax.swing.JFrame {
         tea.setText(" Orange              Rs.140");
 
         ora_no.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        ora_no.setModel(new javax.swing.SpinnerNumberModel());
 
         oni_no.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        oni_no.setModel(new javax.swing.SpinnerNumberModel());
 
         app_no.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        app_no.setModel(new javax.swing.SpinnerNumberModel());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,6 +146,45 @@ public class fruits extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        String oldString = "fru 0 0 0";
+        String newString = "fru"+" "+(Integer)app_no.getValue()+" "+(Integer)oni_no.getValue() +" "+(Integer)ora_no.getValue();
+        System.out.print(newString + "\n");
+        File fileToBeModified = new File("products.txt");
+        String oldContent = "";
+        BufferedReader reader = null;
+        FileWriter writer = null;
+        try
+        {
+            reader = new BufferedReader(new FileReader(fileToBeModified));
+            //Reading all the lines of input text file into oldContent
+            String line = reader.readLine();
+            while (line != null) {
+                oldContent = oldContent + line + System.lineSeparator();
+                line = reader.readLine();
+            }
+            //Replacing oldString with newString in the oldContent
+            String newContent = oldContent.replaceAll(oldString, newString);
+            //Rewriting the input text file with newContent
+            writer = new FileWriter(fileToBeModified);
+            writer.write(newContent);
+            System.out.println(newContent);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally{  
+            try{
+                reader.close();
+                writer.close();
+            }catch (IOException e) 
+            {
+                e.printStackTrace();
+            }
+        }
+        
+        
+        ////===================
         if((Integer)app_no.getValue() > 0){
             cart.name[cart.n] = "Apple";
             cart.qty[cart.n] = (Integer)app_no.getValue();
@@ -155,6 +207,34 @@ public class fruits extends javax.swing.JFrame {
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {                                     
+        // TODO add your handling code here:
+        try {
+            int[] x = new int[4];
+            FileInputStream fstream = new FileInputStream("products.txt");
+            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String data;
+            
+            data = br.readLine();
+            data = br.readLine();
+            String[] tmp = data.split("\\s+");    //Split space
+            for(int i =1 ;i < tmp.length;i++){    
+                x[i]= Integer.parseInt(tmp[i]);
+            }
+           
+            app_no.setValue(x[1]);
+            oni_no.setValue(x[2]);
+            ora_no.setValue(x[3]);
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        } catch (IOException ex) {
+            //Logger.getLogger(beverages.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }                   
     /**
      * @param args the command line arguments
      */

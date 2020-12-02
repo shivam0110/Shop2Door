@@ -10,8 +10,8 @@ package Products;
  * @author Shivam
  */
 public class parent_products {
+    String product;
     int price;
-    
     
     void print(){
         //=======

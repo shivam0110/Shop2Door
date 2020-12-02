@@ -5,6 +5,10 @@
  */
 package Login;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 /**
  *
  * @author Shivam
@@ -138,6 +142,18 @@ public class login extends javax.swing.JFrame {
 
     private void signinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signinActionPerformed
         // TODO add your handling code here:
+        try {
+            File myObj = new File("products.txt");
+            FileWriter myWriter = new FileWriter("products.txt");
+            myWriter.write("bev 0 0 0\nfru 0 0 0\nsna 0 0 0\nspi 0 0 0");
+                        //beverages  fruits snacks spices
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+            
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
         String pw = new String(login_pass.getPassword());
         for(int k = 0; k<=customer.i; k++){
             if((customer.email[k].equals(login_id.getText())) && (customer.password[k].equals(pw))){

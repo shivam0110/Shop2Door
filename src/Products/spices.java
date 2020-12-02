@@ -1,5 +1,15 @@
 package Products;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -35,9 +45,9 @@ public class spices extends javax.swing.JFrame {
         nescafe = new javax.swing.JLabel();
         coke = new javax.swing.JLabel();
         tea = new javax.swing.JLabel();
-        cafe_no = new javax.swing.JSpinner();
-        tea_no = new javax.swing.JSpinner();
-        coke_no = new javax.swing.JSpinner();
+        j_no = new javax.swing.JSpinner();
+        o_no = new javax.swing.JSpinner();
+        t_no = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,11 +77,11 @@ public class spices extends javax.swing.JFrame {
         tea.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tea.setText("Jeera            Rs.140");
 
-        cafe_no.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        j_no.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
 
-        tea_no.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        o_no.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
 
-        coke_no.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        t_no.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -85,17 +95,17 @@ public class spices extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cafe_no, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(j_no, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tea_no, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(o_no, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(coke, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(124, 124, 124)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(coke_no, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(t_no, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nescafe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(60, 60, 60))
         );
@@ -114,9 +124,9 @@ public class spices extends javax.swing.JFrame {
                     .addComponent(nescafe, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(coke_no, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tea_no, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cafe_no, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(t_no, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(o_no, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(j_no, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(43, 43, 43)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(114, Short.MAX_VALUE))
@@ -127,28 +137,95 @@ public class spices extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if((Integer)coke_no.getValue() > 0){
+        String oldString = "spi 0 0 0";
+        String newString = "spi"+" "+(Integer)j_no.getValue()+" "+(Integer)o_no.getValue() +" "+(Integer)t_no.getValue();
+        System.out.print(newString + "\n");
+        File fileToBeModified = new File("products.txt");
+        String oldContent = "";
+        BufferedReader reader = null;
+        FileWriter writer = null;
+        try
+        {
+            reader = new BufferedReader(new FileReader(fileToBeModified));
+            //Reading all the lines of input text file into oldContent
+            String line = reader.readLine();
+            while (line != null) {
+                oldContent = oldContent + line + System.lineSeparator();
+                line = reader.readLine();
+            }
+            //Replacing oldString with newString in the oldContent
+            String newContent = oldContent.replaceAll(oldString, newString);
+            //Rewriting the input text file with newContent
+            writer = new FileWriter(fileToBeModified);
+            writer.write(newContent);
+            System.out.println(newContent);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally{  
+            try{
+                reader.close();
+                writer.close();
+            }catch (IOException e) 
+            {
+                e.printStackTrace();
+            }
+        }
+        
+        
+        ////===================
+        if((Integer)j_no.getValue() > 0){
             cart.name[cart.n] = "Jeera";
-            cart.qty[cart.n] = (Integer)coke_no.getValue();
+            cart.qty[cart.n] = (Integer)j_no.getValue();
             cart.total = cart.total + cart.qty[cart.n]*140;
             cart.n++;
         }
-        if((Integer)cafe_no.getValue() > 0){
+        if((Integer)o_no.getValue() > 0){
             cart.name[cart.n] = "Organic";
-            cart.qty[cart.n] = (Integer)cafe_no.getValue();
+            cart.qty[cart.n] = (Integer)o_no.getValue();
             cart.total = cart.total + cart.qty[cart.n]*140;
             cart.n++;
         }
-        if((Integer)tea_no.getValue() > 0){
+        if((Integer)t_no.getValue() > 0){
             cart.name[cart.n] = "Turmeric";
-            cart.qty[cart.n] = (Integer)tea_no.getValue();
+            cart.qty[cart.n] = (Integer)t_no.getValue();
             cart.total = cart.total + cart.qty[cart.n]*220;
             cart.n++;
         }
         new products().setVisible(true);
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
-
+private void formWindowActivated(java.awt.event.WindowEvent evt) {                                     
+        // TODO add your handling code here:
+        try {
+            int[] x = new int[4];
+            FileInputStream fstream = new FileInputStream("products.txt");
+            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String data;
+            
+            data = br.readLine();
+            data = br.readLine();
+            data = br.readLine();
+            data = br.readLine();
+            String[] tmp = data.split("\\s+");    //Split space
+            for(int i =1 ;i < tmp.length;i++){    
+                x[i]= Integer.parseInt(tmp[i]);
+            }
+           
+            j_no.setValue(x[1]);
+            o_no.setValue(x[2]);
+            t_no.setValue(x[3]);
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        } catch (IOException ex) {
+            //Logger.getLogger(beverages.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }                   
     /**
      * @param args the command line arguments
      */
@@ -185,15 +262,15 @@ public class spices extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSpinner cafe_no;
     private javax.swing.JLabel coke;
-    private javax.swing.JSpinner coke_no;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JSpinner j_no;
     private javax.swing.JLabel nescafe;
+    private javax.swing.JSpinner o_no;
+    private javax.swing.JSpinner t_no;
     private javax.swing.JLabel tea;
-    private javax.swing.JSpinner tea_no;
     // End of variables declaration//GEN-END:variables
 }

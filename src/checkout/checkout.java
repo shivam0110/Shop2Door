@@ -52,6 +52,7 @@ public class checkout extends javax.swing.JFrame {
         });
 
         receipt.setColumns(20);
+        receipt.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
         receipt.setRows(5);
         jScrollPane1.setViewportView(receipt);
 

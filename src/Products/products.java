@@ -7,10 +7,14 @@ package Products;
  */
 import Login.customer;
 import Products.cart;
+import java.io.File;  // Import the File class
+import java.io.IOException;  // Import the IOException class to handle errors
+import java.io.FileWriter;
 /**
  *
- * @author Rut Shah
+ *
  */
+
 
 public class products extends javax.swing.JFrame {
 
@@ -20,7 +24,9 @@ public class products extends javax.swing.JFrame {
     public products() {
         initComponents();
     }
-
+    
+  
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -94,7 +100,7 @@ public class products extends javax.swing.JFrame {
         jLabel1.setText("Click on the category which u wanna Buy from");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 250, 560, 40));
 
-        cart.setText("CheckOut");
+        cart.setText("Cart");
         cart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cartActionPerformed(evt);
@@ -169,7 +175,7 @@ new spices().setVisible(true);
             java.util.logging.Logger.getLogger(products.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         //jTextField1.setText("dalcn");
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

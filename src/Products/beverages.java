@@ -1,5 +1,10 @@
 package Products;
 
+import java.io.*;  // Import this class to handle errors
+import java.util.Scanner; // Import the Scanner class to read text files
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java. util. *;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,7 +13,6 @@ package Products;
 
 /**
  *
- * @author Rut Shah
  */
 public class beverages extends javax.swing.JFrame {
 
@@ -40,6 +44,11 @@ public class beverages extends javax.swing.JFrame {
         coke_no = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/beverage1.jpg"))); // NOI18N
@@ -70,10 +79,13 @@ public class beverages extends javax.swing.JFrame {
         tea.setText("Tea              Rs.140");
 
         cafe_no.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        cafe_no.setModel(new javax.swing.SpinnerNumberModel());
 
         tea_no.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        tea_no.setModel(new javax.swing.SpinnerNumberModel());
 
         coke_no.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        coke_no.setModel(new javax.swing.SpinnerNumberModel());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -105,17 +117,20 @@ public class beverages extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(tea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(66, 66, 66))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(tea_no, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(66, 66, 66))
+                        .addComponent(tea_no, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(96, 96, 96))))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(64, 64, 64)
-                    .addComponent(coke, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(58, 58, 58)
+                    .addComponent(coke, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(800, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -150,6 +165,45 @@ public class beverages extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        String oldString = "bev 0 0 0";
+        String newString = "bev"+" "+(Integer)coke_no.getValue()+" "+(Integer)cafe_no.getValue() +" "+(Integer)tea_no.getValue();
+        System.out.print(newString + "\n");
+        File fileToBeModified = new File("products.txt");
+        String oldContent = "";
+        BufferedReader reader = null;
+        FileWriter writer = null;
+        try
+        {
+            reader = new BufferedReader(new FileReader(fileToBeModified));
+            //Reading all the lines of input text file into oldContent
+            String line = reader.readLine();
+            while (line != null) {
+                oldContent = oldContent + line + System.lineSeparator();
+                line = reader.readLine();
+            }
+            //Replacing oldString with newString in the oldContent
+            String newContent = oldContent.replaceAll(oldString, newString);
+            //Rewriting the input text file with newContent
+            writer = new FileWriter(fileToBeModified);
+            writer.write(newContent);
+            System.out.println(newContent);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        finally{  
+            try{
+                reader.close();
+                writer.close();
+            }catch (IOException e) 
+            {
+                e.printStackTrace();
+            }
+        }
+        
+        
+        ////===================
         if((Integer)coke_no.getValue() > 0){
             cart.name[cart.n] = "Coke";
             cart.qty[cart.n] = (Integer)coke_no.getValue();
@@ -171,6 +225,35 @@ public class beverages extends javax.swing.JFrame {
         new products().setVisible(true);
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        try {
+            int[] x = new int[4];
+            FileInputStream fstream = new FileInputStream("products.txt");
+            DataInputStream in = new DataInputStream(fstream);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String data;
+            
+            data = br.readLine();
+            System.out.print(data + "\n");
+            String[] tmp = data.split("\\s+");    //Split space
+            for(int i =1 ;i < tmp.length;i++){    
+                x[i]= Integer.parseInt(tmp[i]);
+            }
+           
+            coke_no.setValue(x[1]);
+            cafe_no.setValue(x[2]);
+            tea_no.setValue(x[3]);
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        } catch (IOException ex) {
+            //Logger.getLogger(beverages.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments

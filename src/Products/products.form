@@ -129,7 +129,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="cart">
       <Properties>
-        <Property name="text" type="java.lang.String" value="CheckOut"/>
+        <Property name="text" type="java.lang.String" value="Cart"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cartActionPerformed"/>
